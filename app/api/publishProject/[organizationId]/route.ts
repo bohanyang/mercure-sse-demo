@@ -1,8 +1,10 @@
 import { NextResponse } from 'next/server';
 import { SignJWT } from 'jose';
 
-
-export async function POST(req: Request, { params }: { params: Promise<{ organizationId: string }> }) {
+export async function POST(
+  req: Request,
+  { params }: { params: Promise<{ organizationId: string }> },
+) {
   try {
     const { organizationId } = await params;
     // リクエストボディをパース
@@ -11,13 +13,16 @@ export async function POST(req: Request, { params }: { params: Promise<{ organiz
     // 環境変数からJWTキーを取得
     const secretKey = process.env.MERCURE_PUBLISHER_JWT_KEY;
     if (!secretKey) {
-      return NextResponse.json({ error: 'MERCURE_PUBLISHER_JWT_KEY is not set' }, { status: 500 });
+      return NextResponse.json(
+        { error: 'MERCURE_PUBLISHER_JWT_KEY is not set' },
+        { status: 500 },
+      );
     }
 
     // JWTペイロードを作成
     const payload = {
       mercure: {
-        publish: ["*"],
+        publish: ['*'],
       },
     };
 
@@ -26,28 +31,33 @@ export async function POST(req: Request, { params }: { params: Promise<{ organiz
       .setProtectedHeader({ alg: 'HS256' })
       .sign(new TextEncoder().encode(secretKey));
 
-
     const mercureEndpoint = process.env.NEXT_PUBLIC_MERCURE_ENDPOINT;
     if (!mercureEndpoint) {
-      return NextResponse.json({ error: 'NEXT_PUBLIC_MERCURE_ENDPOINT is not set' }, { status: 500 });
+      return NextResponse.json(
+        { error: 'NEXT_PUBLIC_MERCURE_ENDPOINT is not set' },
+        { status: 500 },
+      );
     }
 
     await fetch(mercureEndpoint, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
-        'Authorization': `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
       },
       body: new URLSearchParams({
-        topic: `/organizations/${organizationId}/projects`,
+        topic: `/organizations/${organizationId}/projects/${body.id}`,
         data: JSON.stringify(body),
-      })
+      }),
     });
 
     // トークンを返す
-    return NextResponse.json({  });
+    return NextResponse.json({});
   } catch (error) {
-    console.error('Error generating JWT:', error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    console.error(error);
+    return NextResponse.json(
+      { error: 'Internal Server Error' },
+      { status: 500 },
+    );
   }
 }

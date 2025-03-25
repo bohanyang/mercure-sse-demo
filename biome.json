@@ -1,0 +1,66 @@
+{
+  "$schema": "https://biomejs.dev/schemas/1.9.3/schema.json",
+  "organizeImports": {
+    "enabled": true
+  },
+  "files": {
+    "include": ["app"]
+  },
+  "javascript": {
+    "parser": {
+      "unsafeParameterDecoratorsEnabled": true
+    },
+    "formatter": {
+      "quoteStyle": "single",
+      "jsxQuoteStyle": "single"
+    }
+  },
+  "formatter": {
+    "indentStyle": "space"
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true,
+      "suspicious": {
+        "noExplicitAny": "warn",
+        "noPrototypeBuiltins": "warn",
+        "noShadowRestrictedNames": "warn",
+        "noEmptyInterface": "info"
+      },
+      "complexity": {
+        "noBannedTypes": "warn",
+        "noForEach": "info",
+        "useLiteralKeys": "warn",
+        "useOptionalChain": "warn",
+        "noThisInStatic": "warn",
+        "noStaticOnlyClass": "warn",
+        "noUselessConstructor": "warn",
+        "noUselessTernary": "warn",
+        "noExtraBooleanCast": "info",
+        "useArrowFunction": "warn",
+        "useFlatMap": "info"
+      },
+      "style": {
+        "noUnusedTemplateLiteral": "info",
+        "useTemplate": "warn",
+        "noNonNullAssertion": "warn",
+        "useNodejsImportProtocol": "info",
+        "useConst": "warn",
+        "noInferrableTypes": "info"
+      },
+      "a11y": {
+        "useSemanticElements": "info",
+        "useKeyWithClickEvents": "info",
+        "noSvgWithoutTitle": "info"
+      },
+      "performance": {
+        "noAccumulatingSpread": "info",
+        "noDelete": "info"
+      },
+      "correctness": {
+        "noFlatMapIdentity": "info"
+      }
+    }
+  }
+}
